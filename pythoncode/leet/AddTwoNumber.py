@@ -19,35 +19,26 @@ class ListNode:
 
 
 class Solution:
-    def add_two_numbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        res = ListNode()
-        total_tail_node = res
+    def add_two_numbers(self, l1: ListNode, l2: ListNode, carry: int = 0) -> ListNode:
+        # Termination
+        if l1 is None and l2 is None:
+            return None if carry == 0 else ListNode(carry)
 
-        first = l1
-        second = l2
-        carry = 0
-        # Termination condition - all is None
-        while first or second or carry:
-            # Do the sum
-            digit_sum = carry
-            if first is not None:
-                digit_sum += first.val
-                first = first.next
-            if second is not None:
-                digit_sum += second.val
-                second = second.next
+        res = ListNode(carry)
 
-            if digit_sum > 9:
-                carry = digit_sum // 10
-                digit_sum = digit_sum % 10
-            else:
-                carry = 0
+        if l1 is not None:
+            res.val += l1.val
+        else:
+            l1 = ListNode(0)
 
-            # update the tail node pointer
-            total_tail_node.next = ListNode(digit_sum)
-            total_tail_node = total_tail_node.next
+        if l2 is not None:
+            res.val += l2.val
+        else:
+            l2 = ListNode(0)
 
-        return res.next
+        carry = res.val // 10
+        res.val = res.val % 10
 
+        res.next = self.add_two_numbers(l1.next, l2.next, carry)
 
-print(12//10)
+        return res
