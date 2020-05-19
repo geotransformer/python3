@@ -16,15 +16,10 @@ from typing import List
 
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        index = []
-        numbers = {}
+        seen = {}
+        for i, j in enumerate(nums):
+            need = target - j
+            if need in seen:
+                return [seen[need], i]
 
-        for i in range(len(nums)):
-            diff = target - nums[i]
-            if diff in numbers.keys():
-                index.append(numbers.get(diff))
-                index.append(i)
-                break
-            else:
-                numbers[nums[i]] = i
-        return index
+            seen[j] = i
